@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { showNotification } from '../reducers/notificationReducer'
+import { addVote } from '../reducers/anecdoteReducer'
 import Notification from './Notification'
-import anecdoteService from '../services/anecdotes'
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
@@ -22,13 +21,8 @@ const AnecdoteList = () => {
 
   const handleVote = async (anecdote) => {
     console.log('anecdote id', anecdote.id)
-    await anecdoteService.vote(anecdote.id)
-    dispatch(voteAnecdote(anecdote.id))
-    dispatch(setNotification(`You voted '${anecdote.content}'`))
-
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 5000)
+    dispatch(addVote(anecdote.id))
+    dispatch(showNotification(`You voted '${anecdote.content}'`, 10))
   }
 
   return (
